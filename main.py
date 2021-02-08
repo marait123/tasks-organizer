@@ -14,7 +14,7 @@ class GUI(Tk):
         self.path = filedialog.askdirectory()
         print(self.path)
 
-        self.new_Button.destroy()
+        # self.new_Button.destroy()
         self.create_todo_list(self.path)
         return self.path
 
@@ -23,7 +23,12 @@ class GUI(Tk):
         print(self.file_path)
         return self.file_path
 
+    def hide_buttons(self):
+        self.new_Button.destroy()
+        self.open_Button.destroy()
+
     def create_todo_list(self, path):
+        self.hide_buttons()
         files = os.listdir(path)
         print(files)
 
@@ -36,8 +41,9 @@ class GUI(Tk):
                                  command=lambda: self.getting_tasks_dir())
         self.new_Button.pack(side=LEFT)
 
-        self.new_Button = Button(self.button_Frame, text='open tasks file',
-                                 command=lambda: self.read_tasks_file(), padx=100).pack(side=LEFT)
+        self.open_Button = Button(self.button_Frame, text='open tasks file',
+                                  command=lambda: self.read_tasks_file(), padx=100)
+        self.open_Button.pack(side=LEFT)
         # self.new_Button.place(relx=.5, rely=.5, anchor=CENTER)
 
     def todoList(self):
