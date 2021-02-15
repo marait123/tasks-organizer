@@ -5,10 +5,11 @@ const electron = require("electron");
 //const {app, BrowserWindow} = require('electron')
 const path = require('path')
 const url = require('url')
-const fs = require('fs')
+const fs = require('fs');
+const { dir } = require("console");
 // let shell = electron.shell;
 // const dialog  = electron.dialog; 
-const {shell,dialog, BrowserWindow,app, Menu} = electron;
+const {shell,dialog, BrowserWindow,app, Menu, ipcMain} = electron;
 
 // shell.openExternal(__dirname)
 
@@ -44,7 +45,12 @@ let win;
 
 function createWindow () {
   // console.log(dialog.showOpenDialog({ properties: ['openDirectory', 'multiSelections'] }))
-  win = new BrowserWindow({width: 800, height: 600})
+  win = new BrowserWindow({
+    width: 800, 
+    height: 600,
+    webPreferences: {
+        nodeIntegration: true
+    }})
 
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
@@ -105,3 +111,31 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+
+// SECTION: ipc
+
+ipcMain.on('2', async (event, path) => { 
+  console.log("show_dialog received");
+  var dirs = await dialog.showOpenDialog({ properties: ['openDirectory', 'multiSelections'] });
+  console.log(dirs)
+  if(dirs == undefined){
+    event.sender.sendSync('dirs', {dirs: "dirs"})
+  }else{
+    event.sender.sendSync('dirs', {
+      dirs:dirs
+    });
+  }
+
+});
+
+
+// Event handler for asynchronous incoming messages
+ipcMain.on('show_dialog', async (event, arg) => {
+  console.log(arg)
+  var dirs = await dialog.showOpenDialog({ properties: ['openDirectory', 'multiSelections'] });
+  console.log("dirs");
+  console.log(dirs);
+  // Event emitter for sending asynchronous messages
+  event.sender.send('show_dialog-reply', dirs)
+})
