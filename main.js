@@ -44,70 +44,87 @@ const directoryPath = __dirname;
 let win;
 
 function createWindow() {
-  // console.log(dialog.showOpenDialog({ properties: ['openDirectory', 'multiSelections'] }))
-  win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-    },
-  });
-
-  win.loadURL(
-    url.format({
-      pathname: path.join(__dirname, "index.html"),
-      protocol: "file:",
-      slashes: true,
-    })
-  );
-  // win.webContents.openDevTools();
-  win.on("closed", () => {
-    win = null;
-  });
-
-  const isMac = process.platform === "darwin";
-
-  const template = [
-    {
-      label: "File",
-      submenu: [isMac ? { role: "close" } : { role: "quit" }],
-    },
-    // { role: 'windowMenu' }
-    {
-      label: "Window",
-      submenu: [{ role: "minimize" }, { role: "zoom" }, { role: "close" }],
-    },
-  ];
-  if (process.env.NODE_ENV !== "production") {
-    template.push({
-      label: "view",
-
-      submenu: [{ role: "toggleDevTools", accelerator: "f12" }],
+    // console.log(dialog.showOpenDialog({ properties: ['openDirectory', 'multiSelections'] }))
+    win = new BrowserWindow({
+        width: 800,
+        height: 600,
+        webPreferences: {
+            nodeIntegration: true,
+        },
     });
-  }
-  const menu = Menu.buildFromTemplate(template);
-  Menu.setApplicationMenu(menu);
+
+    win.loadURL(
+        url.format({
+            pathname: path.join(__dirname, "index.html"),
+            protocol: "file:",
+            slashes: true,
+        })
+    );
+    // win.webContents.openDevTools();
+    win.on("closed", () => {
+        win = null;
+    });
+
+    const isMac = process.platform === "darwin";
+
+    const template = [
+        {
+            label: "File",
+            submenu: [
+                isMac
+                    ? {
+                          role: "close",
+                      }
+                    : {
+                          role: "quit",
+                      },
+                {
+                    label: "close",
+                    click: async () => {
+                        console.log("clicked");
+                    },
+                },
+            ],
+        },
+        // { role: 'windowMenu' }
+        {
+            label: "Window",
+            submenu: [
+                { role: "minimize" },
+                { role: "zoom" },
+                { role: "close" },
+            ],
+        },
+    ];
+    if (process.env.NODE_ENV !== "production") {
+        template.push({
+            label: "view",
+            submenu: [{ role: "toggleDevTools", accelerator: "f12" }],
+        });
+    }
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
 }
 app.on("ready", createWindow);
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
+    if (process.platform !== "darwin") {
+        app.quit();
+    }
 });
 
 app.on("activate", () => {
-  if (win === null) {
-    createWindow();
-  }
+    if (win === null) {
+        createWindow();
+    }
 });
 
 // Event handler for asynchronous incoming messages
 ipcMain.on("show_dialog", async (event, arg) => {
-  console.log(arg);
-  var dirs = await dialog.showOpenDialog({ properties: ["openDirectory"] });
-  console.log("dirs");
+    console.log(arg);
+    var dirs = await dialog.showOpenDialog({ properties: ["openDirectory"] });
+    console.log("dirs");
 
-  // Event emitter for sending asynchronous messages
-  event.sender.send("dir", dirs);
+    // Event emitter for sending asynchronous messages
+    event.sender.send("dir", dirs);
 });
