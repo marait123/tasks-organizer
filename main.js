@@ -136,7 +136,15 @@ ipcMain.on("show_dialog", async (event, arg) => {
 ipcMain.on("save_dialog", async (event, arg) => {
     console.log("arguments ent to save dialog");
     console.log(arg);
-    var file_obj = await dialog.showSaveDialog({});
+    var file_obj = await dialog.showSaveDialog({
+        title: "todo.json",
+        filters: [
+            {
+                name: "todo",
+                extensions: ["json", "todo"],
+            },
+        ],
+    });
     console.log("saved_file");
     console.log(file_obj);
     // Event emitter for sending asynchronous messages

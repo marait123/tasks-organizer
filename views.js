@@ -20,10 +20,21 @@ const { ipcRenderer } = require("electron");
 app_state = {
     title: "untitled.",
     completed: false,
-    folder: ".",
-    path: "untitled.todo",
+    saved: false,
+    full_path: ".",
+    name: "untitled.todo",
+    text: "None",
     subTodos: [],
 };
+function insertTodo(todoMain, name, text = "") {
+    todo = {
+        name,
+        text: text,
+        completed: false,
+        subTodos: [],
+    };
+    todoMain.subTodos.push(todo);
+}
 class Screen {
     constructor() {}
     render() {}
@@ -46,36 +57,7 @@ class TodoScreen {
     constructor(files) {
         this.files = files;
     }
-    render() {
-        start_screen.remove();
-        $("#main-div").append(`<div id="todo-div"></div>`);
-        // console.log("files");
-        $("#todo-div").append(`<div class="todo-title">
-            <input
-                type="text"
-                name="todo-title"
-                id="todo-title-input"
-                value="untitled"
-        />
-        <input
-            type="button"
-            id="todo-save"
-            value="save"
-            onclick="alert('implement open todo')"
-        />
-    </div>`);
-
-        let i = 1;
-        var elements = $();
-
-        this.files.forEach((value, index, arr) => {
-            console.log(value);
-            elements = elements.add(`<div class="todo-item">  <input type="checkbox" id="${i}" name="todo-${i}" value="done">
-        ${i}. ${value}</div>`);
-            i++;
-        });
-        $("#todo-div").append(elements);
-    }
+    render() {}
     remove() {
         $("#todo-div").remove();
     }
@@ -116,6 +98,8 @@ function generate_todos(files) {
 
     files.forEach((value, index, arr) => {
         console.log(value);
+        insertTodo(app_state, value);
+
         elements = elements.add(`<div class="todo-item">  <input type="checkbox" id="${i}" name="todo-${i}" value="done">
         ${i}. ${value}</div>`);
         i++;
@@ -152,6 +136,12 @@ function save_todos() {
     ipcRenderer.on("saved_file", (event, data) => {
         console.log("recieved: ");
         console.log(data);
+        console.log("appstate");
+        console.log(app_state);
+        let f_string = JSON.stringify(app_state);
+        console.log("f_string");
+        console.log(f_string);
+        fs.writeFileSync(data.filePath, f_string);
     });
 }
 

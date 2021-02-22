@@ -1,0 +1,64 @@
+{
+    "title": "untitled.",
+    "completed": false,
+    "saved": false,
+    "full_path": ".",
+    "name": "untitled.todo",
+    "text": "None",
+    "subTodos": [
+        { "name": ".git", "text": "", "completed": false, "subTodos": [] },
+        {
+            "name": ".gitignore",
+            "text": "",
+            "completed": false,
+            "subTodos": []
+        },
+        {
+            "name": ".prettierrc",
+            "text": "",
+            "completed": false,
+            "subTodos": []
+        },
+        {
+            "name": "index.html",
+            "text": "",
+            "completed": false,
+            "subTodos": []
+        },
+        { "name": "koko.json", "text": "", "completed": false, "subTodos": [] },
+        { "name": "koko.todo", "text": "", "completed": false, "subTodos": [] },
+        { "name": "main.js", "text": "", "completed": false, "subTodos": [] },
+        {
+            "name": "node_modules",
+            "text": "",
+            "completed": false,
+            "subTodos": []
+        },
+        {
+            "name": "organizer-win32-x64",
+            "text": "",
+            "completed": false,
+            "subTodos": []
+        },
+        {
+            "name": "package-lock.json",
+            "text": "",
+            "completed": false,
+            "subTodos": []
+        },
+        {
+            "name": "package.json",
+            "text": "",
+            "completed": false,
+            "subTodos": []
+        },
+        { "name": "README.md", "text": "", "completed": false, "subTodos": [] },
+        {
+            "name": "styles.css",
+            "text": "",
+            "completed": false,
+            "subTodos": []
+        },
+        { "name": "views.js", "text": "", "completed": false, "subTodos": [] }
+    ]
+}
