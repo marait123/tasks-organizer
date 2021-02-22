@@ -2,6 +2,28 @@
 const fs = require("fs");
 const $ = require("jquery");
 const { ipcRenderer } = require("electron");
+
+// a file is saved as
+/*
+{
+    title:"koko wawa",
+    completed:false,
+    path:"./koko wawa.todo",  -->> this is the path in which the todo file is located
+    subTodos:[
+        {
+            title:"",
+            completed:false
+        }
+    ]
+}
+*/
+app_state = {
+    title: "untitled.",
+    completed: false,
+    folder: ".",
+    path: "untitled.todo",
+    subTodos: [],
+};
 class Screen {
     constructor() {}
     render() {}
@@ -39,7 +61,7 @@ class TodoScreen {
             type="button"
             id="todo-save"
             value="save"
-            onclick="alert('hi')"
+            onclick="alert('implement open todo')"
         />
     </div>`);
 
@@ -85,7 +107,7 @@ function generate_todos(files) {
             type="button"
             id="todo-save"
             value="save"
-            onclick="alert('hi')"
+            onclick="save_todos()"
         />
     </div>`);
     // console.log("files");
@@ -105,17 +127,33 @@ const show_dialog = () => {
     // test
     // generate_todos(["hi 1", "hi 2", "hi 3"]);
     // return;
-    ipcRenderer.sendSync("show_dialog", {
+    ipcRenderer.send("show_dialog", {
         do: "show_dialog",
     });
 
     ipcRenderer.on("dir", (event, data) => {
-        // console.log("recieved: ");
-        // console.log(data);
+        console.log("recieved: ");
+        console.log(data);
         let files = fs.readdirSync(data.filePaths[0]);
+        // console.log(files);
         generate_todos(files);
     });
 };
+// TODO: save file
+function save_todos() {
+    // ipcRenderer.sendSync('synchronous-message', 'sync ping')
+    // test
+    // generate_todos(["hi 1", "hi 2", "hi 3"]);
+    // return;
+    ipcRenderer.send("save_dialog", {
+        do: "save_dialog",
+    });
+
+    ipcRenderer.on("saved_file", (event, data) => {
+        console.log("recieved: ");
+        console.log(data);
+    });
+}
 
 // TODO: remove
 function readFile() {}

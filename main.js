@@ -43,8 +43,9 @@ const directoryPath = __dirname;
 
 let win;
 
-function createWindow() {
+async function createWindow() {
     // console.log(dialog.showOpenDialog({ properties: ['openDirectory', 'multiSelections'] }))
+
     win = new BrowserWindow({
         width: 800,
         height: 600,
@@ -122,9 +123,22 @@ app.on("activate", () => {
 // Event handler for asynchronous incoming messages
 ipcMain.on("show_dialog", async (event, arg) => {
     console.log(arg);
-    var dirs = await dialog.showOpenDialog({ properties: ["openDirectory"] });
-    console.log("dirs");
+    var dir_obj = await dialog.showOpenDialog({
+        properties: ["openDirectory", "openFile"],
+    });
+    console.log("dir_obj");
 
     // Event emitter for sending asynchronous messages
-    event.sender.send("dir", dirs);
+    event.sender.send("dir", dir_obj);
+});
+
+// Event handler for asynchronous incoming messages
+ipcMain.on("save_dialog", async (event, arg) => {
+    console.log("arguments ent to save dialog");
+    console.log(arg);
+    var file_obj = await dialog.showSaveDialog({});
+    console.log("saved_file");
+    console.log(file_obj);
+    // Event emitter for sending asynchronous messages
+    event.sender.send("saved_file", file_obj);
 });
