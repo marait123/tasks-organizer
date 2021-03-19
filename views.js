@@ -133,8 +133,7 @@ class TodoScreen {
 }
 
 // screens area
-let start_screen = new StartScreen();
-let current_screen = start_screen;
+let current_screen = new StartScreen();
 
 function render_screen(screen) {
 	current_screen.remove();
