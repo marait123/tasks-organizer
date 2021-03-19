@@ -85,6 +85,18 @@ async function createWindow() {
 					},
 				},
 				{
+					label: "choose folder",
+					click: async () => {
+						console.log("clicked");
+						win.webContents.send("menue", {
+							message: "choose-folder",
+						});
+						// ipcMain.send("close", {
+						// 	message: "close",
+						// });
+					},
+				},
+				{
 					label: "close",
 					click: async () => {
 						console.log("clicked");

@@ -43,7 +43,7 @@
 				let side_div = document.getElementById("side-div");
 				let main_div = document.getElementById("main-div");
 				console.log(main_div);
-				main_div.style.height = `${h * 0.9}px`;
+				main_div.style.height = `${h - 80}px`;
 
 				main_content_div.style.width = `${
 					(w - 40) * main_content_div.getAttribute("widthRatio")
@@ -73,7 +73,7 @@
 			<div id="side-div" widthRatio=".2">koko wawa</div>
 			<div id="main-content-div" widthRatio=".8"></div>
 		</div>
-		<footer>2020 mohammed ibrahim</footer>
+		<footer id="main-footer">2020 mohammed ibrahim</footer>
 		<script></script>
 		<script src="views.js"></script>
 	</body>

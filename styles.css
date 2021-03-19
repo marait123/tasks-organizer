@@ -72,7 +72,7 @@ body {
 	justify-content: center;
 	flex-direction: column;
 	display: flex;
-	min-height: 500px;
+	/* min-height: 500px; */
 	width: 100%;
 	box-sizing: border-box;
 	background-color: tomato;
@@ -82,7 +82,7 @@ body {
 	/* justify-content: center; */
 	flex-direction: column;
 	display: flex;
-	min-height: 500px;
+	/* min-height: 500px; */
 	/* max-height: 1000px; */
 	overflow: auto;
 	width: 100%;
@@ -154,4 +154,9 @@ body {
 }
 #todo-launch:focus {
 	border: none;
+}
+
+/* footer area */
+.main-footer {
+	height: 30px;
 }

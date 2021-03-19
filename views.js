@@ -18,7 +18,7 @@ const exec = require("child_process");
     ]
 }
 */
-app_state = {
+todos_state = {
 	title: "untitled",
 	last_id: 1,
 	completed: false,
@@ -36,6 +36,10 @@ app_state = {
 		this.title = title;
 	},
 	check_todo(id, checked) {
+		if (this.saved) {
+			this.save();
+		}
+
 		this.modified = true;
 		// this.subTodos[id].completed = checked;
 		for (let index = 0; index < this.subTodos.length; index++) {
@@ -88,9 +92,9 @@ app_state = {
 	},
 	insertFiles(files) {
 		files.forEach((value, index, arr) => {
-			app_state.insertTodo(app_state, value);
+			todos_state.insertTodo(todos_state, value);
 		});
-		render_screen(new TodoScreen(app_state.subTodos));
+		render_screen(new TodoScreen(todos_state.subTodos));
 	},
 	getTodo(id) {
 		for (let index = 0; index < this.subTodos.length; index++) {
@@ -117,7 +121,7 @@ class StartScreen extends Screen {
 		console.log("laoded");
 		$("#main-content-div")
 			.append(`<div id="welcome-div" class="btn-collection">
-            <button class="btn-block choose_folder" onclick="show_dialog()">choose folders</button>
+            <button class="btn-block choose_folder" onclick="show_dialog()">choose folder</button>
             <button class="btn-block open_file" onclick="readFile()">open .todo</button>
           </div>`);
 	}
@@ -137,7 +141,7 @@ class TodoScreen {
 					type="text"
 					name="todo-title"
 					id="todo-title-input"
-					value="${app_state.title}"
+					value="${todos_state.title}"
 			/>
 			<input
 				type="button"
@@ -150,7 +154,7 @@ class TodoScreen {
 		var elements = $();
 		this.subTodos.forEach((value, index, arr) => {
 			// console.log(value);
-			// this.insertTodo(app_state, value);
+			// this.insertTodo(todos_state, value);
 			elements = elements.add(`<div class="todo-item">  
 			<input type="checkbox" onchange="check_todo_change(${value.id})" id="${
 				value.id
@@ -189,12 +193,12 @@ document.addEventListener("DOMContentLoaded", render_screen(new StartScreen()));
 
 function check_todo_change(id) {
 	let checkbox = document.getElementById(`${id}`);
-	app_state.check_todo(id, checkbox.checked);
+	todos_state.check_todo(id, checkbox.checked);
 }
 function check_todo(id) {
 	let checkbox = document.getElementById(`${id}`);
 	checkbox.checked = !checkbox.checked;
-	app_state.check_todo(id, checkbox.checked);
+	todos_state.check_todo(id, checkbox.checked);
 }
 const show_dialog = () => {
 	// test
@@ -207,9 +211,9 @@ const show_dialog = () => {
 // TODO: launch the corresponding todo using system
 function launch_todo(id) {
 	// alert("launch todo id " + id);
-	let todo = app_state.getTodo(id);
+	let todo = todos_state.getTodo(id);
 
-	todo_path = `${app_state.folderPath}\\${todo.path}`;
+	todo_path = `${todos_state.folderPath}\\${todo.path}`;
 	// add space it is important
 	type_program = {
 		directory: "explorer ",
@@ -226,8 +230,8 @@ function launch_todo(id) {
 
 // TODO: save file
 function save_todos() {
-	if (app_state.saved) {
-		app_state.save();
+	if (todos_state.saved) {
+		todos_state.save();
 	} else {
 		ipcRenderer.send("save_dialog", {
 			do: "save_dialog",
@@ -252,22 +256,24 @@ ipcRenderer.on("menue", (event, data) => {
 	} else if (data.message == "open-file") {
 		// alert("recieved open-file");
 		readFile();
+	} else if (data.message == "choose-folder") {
+		show_dialog();
 	}
 });
 ipcRenderer.on("loaded_file", (event, data) => {
 	console.log("recieved: ");
 	console.log(data);
 	if (!data.canceled) {
-		app_state.load(data.filePaths[0]);
-		render_screen(new TodoScreen(app_state.subTodos));
-		// app_state.render_todos();
+		todos_state.load(data.filePaths[0]);
+		render_screen(new TodoScreen(todos_state.subTodos));
+		// todos_state.render_todos();
 	}
 });
 ipcRenderer.on("saved_file", (event, data) => {
 	console.log("recieved: ");
 	console.log(data);
 	if (!data.canceled) {
-		app_state.save(data.filePath);
+		todos_state.save(data.filePath);
 	}
 });
 
@@ -277,11 +283,11 @@ ipcRenderer.on("dir", (event, data) => {
 	if (!data.canceled) {
 		let files = fs.readdirSync(data.filePaths[0]);
 		let path_splitted = data.filePaths[0].split("\\");
-		app_state.setTitle(path_splitted[path_splitted.length - 1]);
+		todos_state.setTitle(path_splitted[path_splitted.length - 1]);
 		// debug
 		console.log(data.filePaths[0]);
 		console.log(path_splitted);
-		app_state.setFolderPath(data.filePaths[0]);
-		app_state.insertFiles(files);
+		todos_state.setFolderPath(data.filePaths[0]);
+		todos_state.insertFiles(files);
 	}
 });
