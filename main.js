@@ -72,6 +72,30 @@ async function createWindow() {
 		{
 			label: "File",
 			submenu: [
+				{
+					label: "open file",
+					click: async () => {
+						console.log("clicked");
+						win.webContents.send("menue", {
+							message: "open-file",
+						});
+						// ipcMain.send("close", {
+						// 	message: "close",
+						// });
+					},
+				},
+				{
+					label: "close",
+					click: async () => {
+						console.log("clicked");
+						win.webContents.send("menue", {
+							message: "close",
+						});
+						// ipcMain.send("close", {
+						// 	message: "close",
+						// });
+					},
+				},
 				isMac
 					? {
 							role: "close",
@@ -79,12 +103,6 @@ async function createWindow() {
 					: {
 							role: "quit",
 					  },
-				{
-					label: "close",
-					click: async () => {
-						console.log("clicked");
-					},
-				},
 			],
 		},
 		// { role: 'windowMenu' }

@@ -63,37 +63,14 @@ app_state = {
 			this[prop] = state[prop];
 		}
 	},
-	render_todos() {
-		// return;
-
-		$("#main-div").append(`<div id="todo-div"></div>`);
-		$("#todo-div").append(`<div class="todo-title">
-				<input
-					type="text"
-					name="todo-title"
-					id="todo-title-input"
-					value="${app_state.title}"
-			/>
-			<input
-				type="button"
-				id="todo-save"
-				value="save"
-				onclick="save_todos()"
-			/>
-		</div>`);
-		let i = 1;
-		var elements = $();
-		this.subTodos.forEach((value, index, arr) => {
-			// console.log(value);
-			// this.insertTodo(app_state, value);
-			elements = elements.add(`<div class="todo-item">  <input type="checkbox" onchange="check_todo_change(${i})" id="${i}" name="todo-${i}" value="done" ${
-				value.completed ? "checked" : ""
-			}>
-        ${i}. ${value.name}</div>`);
-
-			i++;
+	insertFiles(files) {
+		files.forEach((value, index, arr) => {
+			app_state.insertTodo(app_state, value);
 		});
-		$("#todo-div").append(elements);
+		render_screen(new TodoScreen(app_state.subTodos));
+	},
+	render_todos() {
+		return;
 	},
 };
 
@@ -116,7 +93,7 @@ class StartScreen extends Screen {
 	}
 }
 
-class TodoScreen2 {
+class TodoScreen {
 	constructor(subTodos) {
 		this.subTodos = subTodos;
 	}
@@ -155,18 +132,6 @@ class TodoScreen2 {
 	}
 }
 
-class TodoScreen {
-	constructor(files) {
-		this.files = files;
-	}
-	render() {
-		generate_todos(this.files);
-	}
-	remove() {
-		$("#todo-div").remove();
-	}
-}
-
 // screens area
 let start_screen = new StartScreen();
 let current_screen = start_screen;
@@ -183,31 +148,6 @@ function check_todo_change(id) {
 	let checkbox = document.getElementById(`${id}`);
 	app_state.check_todo(id - 1, checkbox.checked);
 }
-function generate_todos(files) {
-	// start_screen.remove();
-
-	// console.log("files");
-
-	/// temp start
-	files.forEach((value, index, arr) => {
-		app_state.insertTodo(app_state, value);
-	});
-	app_state.render_todos();
-	/// temp end
-	return;
-	let i = 1;
-	var elements = $();
-	files.forEach((value, index, arr) => {
-		console.log(value);
-		app_state.insertTodo(app_state, value);
-
-		elements = elements.add(`<div class="todo-item">  <input type="checkbox" onchange="check_todo_change(${i})" id="${i}" name="todo-${i}" value="done">
-        ${i}. ${value}</div>`);
-		i++;
-	});
-	$("#todo-div").append(elements);
-}
-
 const show_dialog = () => {
 	// test
 	// generate_todos(["hi 1", "hi 2", "hi 3"]);
@@ -221,11 +161,7 @@ const show_dialog = () => {
 		console.log(data);
 		if (!data.canceled) {
 			let files = fs.readdirSync(data.filePaths[0]);
-			// console.log(files);
-			files.forEach((value, index, arr) => {
-				app_state.insertTodo(app_state, value);
-			});
-			render_screen(new TodoScreen2(app_state.subTodos));
+			app_state.insertFiles(files);
 		}
 	});
 };
@@ -241,14 +177,6 @@ function save_todos() {
 		ipcRenderer.send("save_dialog", {
 			do: "save_dialog",
 		});
-
-		ipcRenderer.on("saved_file", (event, data) => {
-			console.log("recieved: ");
-			console.log(data);
-			if (!data.canceled) {
-				app_state.save(data.filePath);
-			}
-		});
 	}
 }
 
@@ -257,12 +185,29 @@ function readFile() {
 	ipcRenderer.send("load_dialog", {
 		do: "load_dialog",
 	});
-	ipcRenderer.on("loaded_file", (event, data) => {
-		console.log("recieved: ");
-		console.log(data);
-		if (!data.canceled) {
-			app_state.load(data.filePaths[0]);
-			app_state.render_todos();
-		}
-	});
 }
+ipcRenderer.on("menue", (event, data) => {
+	console.log("menue data received", data);
+
+	if (data.message == "close") {
+		alert("recieved close");
+	} else if (data.message == "open-file") {
+		alert("recieved open-file");
+	}
+});
+ipcRenderer.on("loaded_file", (event, data) => {
+	console.log("recieved: ");
+	console.log(data);
+	if (!data.canceled) {
+		app_state.load(data.filePaths[0]);
+		render_screen(new TodoScreen(app_state.subTodos));
+		// app_state.render_todos();
+	}
+});
+ipcRenderer.on("saved_file", (event, data) => {
+	console.log("recieved: ");
+	console.log(data);
+	if (!data.canceled) {
+		app_state.save(data.filePath);
+	}
+});
