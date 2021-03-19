@@ -115,7 +115,8 @@ class Screen {
 class StartScreen extends Screen {
 	render() {
 		console.log("laoded");
-		$("#main-div").append(`<div id="welcome-div" class="btn-collection">
+		$("#main-content-div")
+			.append(`<div id="welcome-div" class="btn-collection">
             <button class="btn-block choose_folder" onclick="show_dialog()">choose folders</button>
             <button class="btn-block open_file" onclick="readFile()">open .todo</button>
           </div>`);
@@ -130,7 +131,7 @@ class TodoScreen {
 		this.subTodos = subTodos;
 	}
 	render() {
-		$("#main-div").append(`<div id="todo-div"></div>`);
+		$("#main-content-div").append(`<div id="todo-div"></div>`);
 		$("#todo-div").append(`<div class="todo-title">
 				<input
 					type="text"

@@ -5,6 +5,7 @@ input {
 	outline: 0;
 }
 body {
+	margin: 0;
 	background: rgb(131, 58, 180);
 	background: linear-gradient(
 		90deg,
@@ -34,9 +35,33 @@ body {
 #main-div {
 	display: flex;
 }
+#main-content-div {
+	display: flex;
+	/* width: 70%; */
+}
+#icon-div {
+	margin-left: 0;
+	padding: 2px;
+	box-sizing: border-box;
+	width: 40px;
+	display: flex;
+	flex-direction: column;
+	background-color: blanchedalmond;
+}
+.icon-img {
+	box-sizing: border-box;
+	padding: 5px 2px;
+	width: 100%;
+	/* max-height: 50px; */
+}
+.icon-img:hover {
+	background-color: rgb(165, 121, 207);
+}
 #side-div {
-	/* box-sizing: border-box; */
-	width: 30%;
+	padding: 2px;
+
+	box-sizing: border-box;
+	/* width: 25%; */
 	display: flex;
 	background-color: rgb(131, 58, 180);
 	/* height: 1000px; */
@@ -48,7 +73,7 @@ body {
 	flex-direction: column;
 	display: flex;
 	min-height: 500px;
-	width: 70%;
+	width: 100%;
 	box-sizing: border-box;
 	background-color: tomato;
 }
@@ -58,7 +83,9 @@ body {
 	flex-direction: column;
 	display: flex;
 	min-height: 500px;
-	width: 70%;
+	/* max-height: 1000px; */
+	overflow: auto;
+	width: 100%;
 	box-sizing: border-box;
 	background-color: tomato;
 }
@@ -94,7 +121,7 @@ body {
 	font-weight: bold;
 }
 #todo-title-input {
-	width: 50%;
+	width: 70%;
 	height: 32px;
 	font-size: 1.2em;
 	border: none;
@@ -127,13 +154,4 @@ body {
 }
 #todo-launch:focus {
 	border: none;
-}
-.noselect {
-	-webkit-touch-callout: none; /* iOS Safari */
-	-webkit-user-select: none; /* Safari */
-	-khtml-user-select: none; /* Konqueror HTML */
-	-moz-user-select: none; /* Old versions of Firefox */
-	-ms-user-select: none; /* Internet Explorer/Edge */
-	user-select: none; /* Non-prefixed version, currently
-                                    supported by Chrome, Edge, Opera and Firefox */
 }
