@@ -159,7 +159,7 @@ ipcMain.on("save_dialog", async (event, arg) => {
 		filters: [
 			{
 				name: "todo",
-				extensions: ["json", "todo"],
+				extensions: ["todo", "json"],
 			},
 		],
 	});

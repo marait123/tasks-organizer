@@ -1,106 +1,139 @@
 h1 {
-    color: orange;
+	color: orange;
 }
 input {
-    outline: 0;
+	outline: 0;
 }
 body {
-    background: rgb(131, 58, 180);
-    background: linear-gradient(
-        90deg,
-        rgba(131, 58, 180, 1) 0%,
-        rgba(253, 29, 29, 1) 50%,
-        rgba(252, 176, 69, 1) 100%
-    );
+	background: rgb(131, 58, 180);
+	background: linear-gradient(
+		90deg,
+		rgba(131, 58, 180, 1) 0%,
+		rgba(253, 29, 29, 1) 50%,
+		rgba(252, 176, 69, 1) 100%
+	);
 }
 .btn-block {
-    display: block;
-    margin: 0 auto;
-    margin-bottom: 10px;
-    width: 159px;
-    height: 40px;
-    background-color: red;
-    color: white;
-    font-weight: bold;
-    border: none;
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 10px;
+	width: 159px;
+	height: 40px;
+	background-color: red;
+	color: white;
+	font-weight: bold;
+	border: none;
 }
 .btn-block:active {
-    border: none;
-    background-color: rgb(160, 7, 7);
+	border: none;
+	background-color: rgb(160, 7, 7);
 }
 .btn-block:hover {
-    background-color: rgb(236, 130, 130);
+	background-color: rgb(236, 130, 130);
 }
 #main-div {
-    display: flex;
+	display: flex;
 }
 #side-div {
-    /* box-sizing: border-box; */
-    width: 30%;
-    display: flex;
-    background-color: rgb(131, 58, 180);
-    /* height: 1000px; */
-    color: white;
+	/* box-sizing: border-box; */
+	width: 30%;
+	display: flex;
+	background-color: rgb(131, 58, 180);
+	/* height: 1000px; */
+	color: white;
 }
 
 #welcome-div {
-    justify-content: center;
-    flex-direction: column;
-    display: flex;
-    min-height: 500px;
-    width: 70%;
-    box-sizing: border-box;
-    background-color: tomato;
+	justify-content: center;
+	flex-direction: column;
+	display: flex;
+	min-height: 500px;
+	width: 70%;
+	box-sizing: border-box;
+	background-color: tomato;
 }
 
 #todo-div {
-    /* justify-content: center; */
-    flex-direction: column;
-    display: flex;
-    min-height: 500px;
-    width: 70%;
-    box-sizing: border-box;
-    background-color: tomato;
+	/* justify-content: center; */
+	flex-direction: column;
+	display: flex;
+	min-height: 500px;
+	width: 70%;
+	box-sizing: border-box;
+	background-color: tomato;
 }
 
 .todo-item {
-    box-sizing: border-box;
-    padding: 10px;
-    width: 95%;
-    margin: 10px 2.5% 10px 2.5%;
-    background-color: rgb(255, 254, 251);
-    color: black;
+	box-sizing: border-box;
+	padding: 10px;
+	width: 95%;
+	margin: 10px 2.5% 10px 2.5%;
+	background-color: rgb(255, 254, 251);
+	color: black;
 }
-
+.todo-item:hover {
+	cursor: context-menu;
+}
+.todo-item > input[type="checkbox"] {
+	cursor: pointer;
+}
+.todo-text {
+	width: 70%;
+	display: inline-block;
+}
+.todo-text:hover {
+	cursor: pointer;
+}
 .todo-title {
-    box-sizing: border-box;
-    padding: 10px;
-    width: 95%;
-    margin: 10px 2.5% 10px 2.5%;
-    background-color: #fffefb;
-    color: black;
-    font-weight: bold;
+	box-sizing: border-box;
+	padding: 10px;
+	width: 95%;
+	margin: 10px 2.5% 10px 2.5%;
+	background-color: #fffefb;
+	color: black;
+	font-weight: bold;
 }
 #todo-title-input {
-    width: 50%;
-    height: 32px;
-    font-size: 2em;
-    border: none;
+	width: 50%;
+	height: 32px;
+	font-size: 1.2em;
+	border: none;
 }
 #todo-title-input:focus {
-    border: 1px solid #f37672;
-    border-radius: 5px;
-    background-color: rgb(252, 252, 174);
+	border: 1px solid #f37672;
+	border-radius: 5px;
+	background-color: rgb(252, 252, 174);
 }
 
 #todo-save {
-    width: 20%;
-    height: 32px;
-    float: right;
-    background-color: aquamarine;
-    color: #fffefb;
-    border: none;
+	width: 20%;
+	height: 32px;
+	float: right;
+	background-color: aquamarine;
+	color: #fffefb;
+	border: none;
 }
 #todo-save:focus {
-    border: none;
+	border: none;
+}
+
+#todo-launch {
+	width: 20%;
+	height: 32px;
+	float: right;
+	background-color: rgb(255, 225, 127);
+	color: #ffffff;
+	border: none;
+}
+#todo-launch:focus {
+	border: none;
+}
+.noselect {
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Old versions of Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
 }
