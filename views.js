@@ -3,20 +3,30 @@ const fs = require("fs");
 const $ = require("jquery");
 const { ipcRenderer } = require("electron");
 const exec = require("child_process");
-const { Screen, StartScreen, TodoScreen, render_screen } = require("./screen");
+const {
+	Screen,
+	StartScreen,
+	TodoScreen,
+	render_screen,
+} = require("./ui/screen");
 
 app_state = {
 	currentList: 0,
+	last_id: 1,
+	get_new_id() {
+		this.last_id++;
+		return this.last_id - 1;
+	},
 	lists: [],
-	setCurrentList(_todo_state) {
-		this.title = _todo_state.title;
-		this.path = _todo_state.path;
+	setCurrentList(_list_state) {
+		this.title = _list_state.title;
+		this.path = _list_state.path;
 	},
 };
 
 list_state = {
 	title: "untitled",
-
+	id: -1,
 	last_id: 1,
 	completed: false,
 	saved: false,
@@ -85,7 +95,8 @@ list_state = {
 		return this.last_id - 1;
 	},
 	insertTodo(todoMain, path, note = "", completed = false) {
-		this.modified = true;
+		this.setModified(true);
+
 		todo = {
 			id: this.get_new_id(),
 			name: path,
