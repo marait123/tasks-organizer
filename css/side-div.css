@@ -1,0 +1,10 @@
+#side-div {
+	padding: 2px;
+
+	box-sizing: border-box;
+	/* width: 25%; */
+	display: flex;
+	background-color: rgb(131, 58, 180);
+	/* height: 1000px; */
+	color: white;
+}
