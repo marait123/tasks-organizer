@@ -1,3 +1,5 @@
+const { extend } = require("jquery");
+
 // TODO: move screens to another file
 class Screen {
 	constructor() {}
@@ -19,8 +21,9 @@ class StartScreen extends Screen {
 	}
 }
 
-class TodoScreen {
+class TodoScreen extends Screen {
 	constructor(todos_state) {
+		super();
 		// this.subTodos = todos_state.subTodos;
 		this.todos_state = todos_state;
 	}
@@ -76,7 +79,9 @@ class TodoScreen {
 let current_screen = new StartScreen();
 
 module.exports.render_screen = (screen) => {
-	current_screen.remove();
+	if (current_screen != null) {
+		current_screen.remove();
+	}
 	current_screen = screen;
 	current_screen.render();
 };

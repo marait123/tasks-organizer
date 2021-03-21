@@ -9,19 +9,43 @@ const {
 	TodoScreen,
 	render_screen,
 } = require("./ui/screen");
+const { ListsSidebar, render_sidebar } = require("./ui/sidebar");
+const { load_object_from_json, store_object_as_json } = require("./utilities");
 
 app_state = {
-	currentList: 0,
-	last_id: 1,
-	get_new_id() {
-		this.last_id++;
-		return this.last_id - 1;
+	// currentList: 0,
+	// last_id: 1,
+	// get_new_id() {
+	// 	this.last_id++;
+	// 	return this.last_id - 1;
+	// },
+	lists: {}, // a list of lists with path as key and title props
+	settings: {}, // For future when adding settings to the app
+	filePath: "app_state.application", // file to store the settings temporarily
+
+	load_state() {
+		load_object_from_json(this, this.filePath);
 	},
-	lists: [],
-	setCurrentList(_list_state) {
-		this.title = _list_state.title;
-		this.path = _list_state.path;
+	record(state) {
+		// if not present
+		if (!this.lists[state.filePath]) {
+			this.lists[state.filePath] = {
+				title: state.title,
+			};
+			this.save();
+		} else {
+			alert("unhandled filePath already exists");
+			throw Error("unhandled filePath already exists");
+		}
 	},
+	save() {
+		let f_string = JSON.stringify(this);
+		fs.writeFileSync(this.filePath, f_string);
+	},
+	// setCurrentList(_list_state) {
+	// 	this.title = _list_state.title;
+	// 	this.path = _list_state.path;
+	// },
 };
 
 list_state = {
@@ -83,11 +107,13 @@ list_state = {
 		this.filePath = filePath;
 		this.saved = true;
 		this.setModified(false);
-		console.log("appstate");
-		console.log(this);
+		store_object_as_json(this, filePath);
+		return;
+		// console.log("appstate");
+		// console.log(this);
 		let f_string = JSON.stringify(this);
-		console.log("f_string");
-		console.log(f_string);
+		// console.log("f_string");
+		// console.log(f_string);
 		fs.writeFileSync(filePath, f_string);
 	},
 	get_new_id() {
@@ -108,6 +134,8 @@ list_state = {
 		todoMain.subTodos.push(todo);
 	},
 	load(file_path) {
+		load_object_from_json(this, file_path);
+		return;
 		console.log("load is called with ", file_path);
 		let data = fs.readFileSync(file_path, "utf8");
 		let state = JSON.parse(data);
@@ -141,7 +169,6 @@ function save_title() {
 		list_state.setTitle(title_input.value);
 	}
 }
-document.addEventListener("DOMContentLoaded", render_screen(new StartScreen()));
 
 function check_todo_change(id) {
 	let checkbox = document.getElementById(`${id}`);
@@ -227,6 +254,9 @@ ipcRenderer.on("saved_file", (event, data) => {
 	console.log(data);
 	if (!data.canceled) {
 		list_state.save(data.filePath);
+		app_state.record(list_state);
+
+		// send list_state to app_state
 	}
 });
 
@@ -245,3 +275,11 @@ ipcRenderer.on("dir", (event, data) => {
 		list_state.insertFiles(files);
 	}
 });
+
+function on_start() {
+	render_screen(new StartScreen());
+	render_sidebar(new ListsSidebar(app_state));
+	console.log("render side bar");
+}
+
+document.addEventListener("DOMContentLoaded", on_start());
