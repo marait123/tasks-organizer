@@ -24,7 +24,9 @@ app_state = {
 	filePath: "app_state.application", // file to store the settings temporarily
 
 	load_state() {
-		load_object_from_json(this, this.filePath);
+		if (fs.existsSync(this.filePath)) {
+			load_object_from_json(this, this.filePath);
+		}
 	},
 	record(state) {
 		// if not present
@@ -33,6 +35,7 @@ app_state = {
 				title: state.title,
 			};
 			this.save();
+			render_sidebar(new ListsSidebar(app_state));
 		} else {
 			alert("unhandled filePath already exists");
 			throw Error("unhandled filePath already exists");
@@ -41,6 +44,11 @@ app_state = {
 	save() {
 		let f_string = JSON.stringify(this);
 		fs.writeFileSync(this.filePath, f_string);
+	},
+	modifyTitle(path, new_title) {
+		this.lists[path].title = new_title;
+		render_sidebar(new ListsSidebar(this));
+		this.save();
 	},
 	// setCurrentList(_list_state) {
 	// 	this.title = _list_state.title;
@@ -82,12 +90,10 @@ list_state = {
 		this.title = title;
 		if (this.saved) {
 			this.save();
+			app_state.modifyTitle(this.filePath, title);
 		}
 	},
 	check_todo(id, checked) {
-		if (this.saved) {
-			this.save();
-		}
 		this.setModified(true);
 
 		// this.subTodos[id].completed = checked;
@@ -97,6 +103,9 @@ list_state = {
 				element.completed = checked;
 				break;
 			}
+		}
+		if (this.saved) {
+			this.save();
 		}
 	},
 
@@ -108,13 +117,7 @@ list_state = {
 		this.saved = true;
 		this.setModified(false);
 		store_object_as_json(this, filePath);
-		return;
-		// console.log("appstate");
-		// console.log(this);
-		let f_string = JSON.stringify(this);
-		// console.log("f_string");
-		// console.log(f_string);
-		fs.writeFileSync(filePath, f_string);
+		// change title of the object
 	},
 	get_new_id() {
 		this.last_id += 1;
@@ -135,14 +138,7 @@ list_state = {
 	},
 	load(file_path) {
 		load_object_from_json(this, file_path);
-		return;
-		console.log("load is called with ", file_path);
-		let data = fs.readFileSync(file_path, "utf8");
-		let state = JSON.parse(data);
-		console.log("state loaded", state);
-		for (let prop in state) {
-			this[prop] = state[prop];
-		}
+		render_screen(new TodoScreen(this));
 	},
 	insertFiles(files) {
 		files.forEach((value, index, arr) => {
@@ -169,7 +165,7 @@ function save_title() {
 		list_state.setTitle(title_input.value);
 	}
 }
-
+function save_title_enter() {}
 function check_todo_change(id) {
 	let checkbox = document.getElementById(`${id}`);
 	list_state.check_todo(id, checkbox.checked);
@@ -206,7 +202,10 @@ function launch_todo(id) {
 	console.log(`${type_program[todo_type]}"${todo_path}"`); // debug
 	exec.exec(`${type_program[todo_type]}"${todo_path}"`);
 }
-
+function switchList(path) {
+	console.log("path is ", path);
+	list_state.load(path);
+}
 // TODO: save file
 function save_todos() {
 	if (list_state.saved) {
@@ -277,6 +276,7 @@ ipcRenderer.on("dir", (event, data) => {
 });
 
 function on_start() {
+	app_state.load_state();
 	render_screen(new StartScreen());
 	render_sidebar(new ListsSidebar(app_state));
 	console.log("render side bar");

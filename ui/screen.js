@@ -20,7 +20,6 @@ class StartScreen extends Screen {
 		$("#welcome-div").remove();
 	}
 }
-
 class TodoScreen extends Screen {
 	constructor(todos_state) {
 		super();
@@ -69,9 +68,23 @@ class TodoScreen extends Screen {
 			i++;
 		});
 		$("#todo-div").append(elements);
+		// $("head").append(`
+		// /*<script class="TodoScreen">
+		// var input = document.getElementById("todo-title-input");
+		// input.addEventListener("keyup", function (event) {
+		// 	if (event.keyCode === 13) {
+		// 		event.preventDefault();
+		// 		save_title();
+		// 		$("#todo-title-input").blur();
+
+		// 	}
+		// });
+		// </script>*/
+		// `);
 	}
 	remove() {
 		$("#todo-div").remove();
+		$(".TodoScreen").remove();
 	}
 }
 

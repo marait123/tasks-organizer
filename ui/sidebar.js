@@ -22,8 +22,14 @@ class ListsSidebar extends Sidebar {
 		for (const key in this.app_state.lists) {
 			// key here is the path
 			const element = this.app_state.lists[key];
+			let path = key.replaceAll("\\", "\\\\");
+			console.log("path is path", path);
 			$("#side-content").append(`
-            <div onclick="alert(${key})" class="list-item">${element.title}</div>
+            <div onclick="switchList('${path}')" class="list-item">${
+				element.title.length > 12
+					? element.title.substr(0, 12) + "..."
+					: element.title
+			}</div>
             `);
 		}
 	}
