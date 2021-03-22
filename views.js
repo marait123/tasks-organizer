@@ -9,10 +9,12 @@ const {
 	TodoScreen,
 	render_screen,
 } = require("./ui/screen");
+
+// const { resize_window, toggle_todo_list } = require("./ui/UI-refresher");
+
 const { ListsSidebar, render_sidebar } = require("./ui/sidebar");
 const { load_object_from_json, store_object_as_json } = require("./utilities");
-
-app_state = {
+const app_state = {
 	// currentList: 0,
 	// last_id: 1,
 	// get_new_id() {
@@ -44,6 +46,7 @@ app_state = {
 	save() {
 		let f_string = JSON.stringify(this);
 		fs.writeFileSync(this.filePath, f_string);
+		resize_window();
 	},
 	modifyTitle(path, new_title) {
 		this.lists[path].title = new_title;

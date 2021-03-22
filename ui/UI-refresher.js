@@ -40,3 +40,5 @@ function resize_window() {
 	console.log(side_div);
 }
 document.addEventListener("DOMContentLoaded", resize_window);
+// module.exports.resize_window = resize_window;
+// module.exports.toggle_todo_list = toggle_todo_list;

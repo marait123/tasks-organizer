@@ -28,6 +28,16 @@ class TodoScreen extends Screen {
 	}
 
 	render() {
+		/*
+
+				<input
+					type="text"
+					name="todo-title"
+					id="todo-title-input"
+					value="${this.todos_state.title}"
+                    onfocusout="save_title()"
+			/>
+		*/
 		$("#main-content-div").append(`<div id="todo-div"></div>`);
 		$("#todo-div").append(`<div class="todo-title">
 				<input
@@ -36,7 +46,8 @@ class TodoScreen extends Screen {
 					id="todo-title-input"
 					value="${this.todos_state.title}"
                     onfocusout="save_title()"
-			/>
+
+					/>
 			<input
 				type="button"
 				id="todo-save"
@@ -68,19 +79,19 @@ class TodoScreen extends Screen {
 			i++;
 		});
 		$("#todo-div").append(elements);
-		// $("head").append(`
-		// /*<script class="TodoScreen">
-		// var input = document.getElementById("todo-title-input");
-		// input.addEventListener("keyup", function (event) {
-		// 	if (event.keyCode === 13) {
-		// 		event.preventDefault();
-		// 		save_title();
-		// 		$("#todo-title-input").blur();
+		$("head").append(`
+		<script class="TodoScreen">
+		var input = document.getElementById("todo-title-input");
+		input.addEventListener("keyup", function (event) {
+			if (event.keyCode === 13) {
+				event.preventDefault();
+				save_title();
+				$("#todo-title-input").blur();
 
-		// 	}
-		// });
-		// </script>*/
-		// `);
+			}
+		});
+		</script>
+		`);
 	}
 	remove() {
 		$("#todo-div").remove();
