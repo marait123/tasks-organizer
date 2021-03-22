@@ -9,6 +9,15 @@ class ListsSidebar extends Sidebar {
 	constructor(app_state) {
 		super();
 		this.app_state = app_state;
+		this.visible = true;
+	}
+	setVisiblity(visible) {
+		this.visible = visible;
+		if (visible == true) {
+			this.render();
+		} else {
+			this.remove();
+		}
 	}
 	render() {
 		console.log("appending side-content-div");
@@ -48,4 +57,7 @@ module.exports.render_sidebar = (sidebar) => {
 	current_sidebar.render();
 };
 
+module.exports.visibilty_change_handler = (_event) => {
+	current_sidebar.setVisiblity(_event.visible);
+};
 module.exports.ListsSidebar = ListsSidebar;
