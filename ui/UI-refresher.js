@@ -25,16 +25,16 @@ function toggle_todo_list() {
 	let side_div = document.getElementById("side-div");
 	let main_content_div = document.getElementById("main-content-div");
 
-	if (ui_refresher.side_visible) {
-		side_div.style.display = "none";
-		side_div.setAttribute("widthRatio", 0);
-		main_content_div.setAttribute("widthRatio", 1);
-	} else {
-		side_div.style.display = "block";
+	// if (ui_refresher.side_visible) {
+	// 	side_div.style.display = "none";
+	// 	side_div.setAttribute("widthRatio", 0);
+	// 	main_content_div.setAttribute("widthRatio", 1);
+	// } else {
+	// 	side_div.style.display = "block";
 
-		side_div.setAttribute("widthRatio", 0.2);
-		main_content_div.setAttribute("widthRatio", 0.8);
-	}
+	// 	side_div.setAttribute("widthRatio", 0.2);
+	// 	main_content_div.setAttribute("widthRatio", 0.8);
+	// }
 	ui_refresher.side_visible = !ui_refresher.side_visible;
 	ui_refresher.fire("toggle_sidebar", { visible: ui_refresher.side_visible });
 	resize_window();

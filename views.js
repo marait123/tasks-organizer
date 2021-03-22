@@ -12,7 +12,11 @@ const {
 
 // const { resize_window, toggle_todo_list } = require("./ui/UI-refresher");
 
-const { ListsSidebar, render_sidebar } = require("./ui/sidebar");
+const {
+	ListsSidebar,
+	visibilty_change_handler,
+	render_sidebar,
+} = require("./ui/sidebar");
 const { load_object_from_json, store_object_as_json } = require("./utilities");
 const app_state = {
 	// currentList: 0,
@@ -229,7 +233,8 @@ function readFile() {
 
 function on_start() {
 	app_state.load_state();
-
+	console.log(ui_refresher);
+	ui_refresher.subscribe("toggle_sidebar", visibilty_change_handler);
 	render_screen(new StartScreen());
 	render_sidebar(new ListsSidebar(app_state));
 	console.log("render side bar");

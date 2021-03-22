@@ -72,7 +72,7 @@ class TodoScreen extends Screen {
 		$("head").append(`
 		<script class="TodoScreen">
 		var input = document.getElementById("todo-title-input");
-		input.addEventListener("keyup", function (event) {
+		input.addEventListener("keydown", function (event) {
 			if (event.keyCode === 13) {
 				event.preventDefault();
 				save_title();
@@ -98,6 +98,11 @@ module.exports.render_screen = (screen) => {
 	}
 	current_screen = screen;
 	current_screen.render();
+};
+
+module.exports.change_width = (_event) => {
+	// current_sidebar.setVisiblity(_event.visible);
+	console.log("screen event received", _event);
 };
 
 module.exports.TodoScreen = TodoScreen;
