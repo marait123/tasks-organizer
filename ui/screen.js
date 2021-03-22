@@ -28,16 +28,6 @@ class TodoScreen extends Screen {
 	}
 
 	render() {
-		/*
-
-				<input
-					type="text"
-					name="todo-title"
-					id="todo-title-input"
-					value="${this.todos_state.title}"
-                    onfocusout="save_title()"
-			/>
-		*/
 		$("#main-content-div").append(`<div id="todo-div"></div>`);
 		$("#todo-div").append(`<div class="todo-title">
 				<input
