@@ -48,15 +48,20 @@ function resize_window() {
 	let main_content_div = document.getElementById("main-content-div");
 	let side_div = document.getElementById("side-div");
 	let main_div = document.getElementById("main-div");
+
 	console.log(main_div);
 	main_div.style.height = `${h - 80}px`;
+	if (main_content_div) {
+		main_content_div.style.width = `${
+			(w - 40) * main_content_div.getAttribute("widthRatio")
+		}px`;
+	}
 
-	main_content_div.style.width = `${
-		(w - 40) * main_content_div.getAttribute("widthRatio")
-	}px`;
-	side_div.style.width = `${
-		(w - 40) * side_div.getAttribute("widthRatio")
-	}px`;
+	if (side_div) {
+		side_div.style.width = `${
+			(w - 40) * side_div.getAttribute("widthRatio")
+		}px`;
+	}
 
 	console.log(main_content_div);
 	console.log(side_div);

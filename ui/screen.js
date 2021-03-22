@@ -100,8 +100,19 @@ module.exports.render_screen = (screen) => {
 	current_screen.render();
 };
 
-module.exports.change_width = (_event) => {
-	// current_sidebar.setVisiblity(_event.visible);
+/**
+ * this function is called whenever a sidebar is hidden or shown
+ * @param {Object} _event this is an object with this {visible:false}
+ */
+module.exports.screen_change_width_handler = (_event) => {
+	let main_content_div = document.getElementById("main-content-div");
+
+	if (!_event.visible) {
+		main_content_div.setAttribute("widthRatio", 1);
+	} else {
+		main_content_div.setAttribute("widthRatio", 0.8);
+	}
+
 	console.log("screen event received", _event);
 };
 

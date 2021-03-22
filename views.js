@@ -8,6 +8,7 @@ const {
 	StartScreen,
 	TodoScreen,
 	render_screen,
+	screen_change_width_handler,
 } = require("./ui/screen");
 
 // const { resize_window, toggle_todo_list } = require("./ui/UI-refresher");
@@ -235,6 +236,8 @@ function on_start() {
 	app_state.load_state();
 	console.log(ui_refresher);
 	ui_refresher.subscribe("toggle_sidebar", visibilty_change_handler);
+	ui_refresher.subscribe("toggle_sidebar", screen_change_width_handler);
+
 	render_screen(new StartScreen());
 	render_sidebar(new ListsSidebar(app_state));
 	console.log("render side bar");
