@@ -1,5 +1,5 @@
 const { extend } = require("jquery");
-
+// fs = require("fs");
 // TODO: move screens to another file
 class Screen {
 	constructor() {}
@@ -50,6 +50,7 @@ class TodoScreen extends Screen {
 		this.todos_state.subTodos.forEach((value, index, arr) => {
 			// console.log(value);
 			// this.insertTodo(todos_state, value);
+
 			elements = elements.add(`<div class="todo-item">  
 			<input type="checkbox" onchange="check_todo_change(${value.id})" id="${
 				value.id
@@ -59,11 +60,14 @@ class TodoScreen extends Screen {
 		<div class="todo-text" ondblclick="check_todo(${value.id})" > ${i}- ${
 				value.name
 			} </div>			
+
 		<input
 		type="button"
 		id="todo-launch"
 		value="launch"
 		onclick="launch_todo(${value.id})"/>
+
+
 	  </div>`);
 
 			i++;
@@ -87,6 +91,15 @@ class TodoScreen extends Screen {
 		$("#todo-div").remove();
 		$(".TodoScreen").remove();
 	}
+
+	expand(full) {
+		let main_content_div = document.getElementById("main-content-div");
+		if (full) {
+			main_content_div.setAttribute("widthRatio", 1);
+		} else {
+			main_content_div.setAttribute("widthRatio", 0.8);
+		}
+	}
 }
 
 // screens area
@@ -105,13 +118,7 @@ module.exports.render_screen = (screen) => {
  * @param {Object} _event this is an object with this {visible:false}
  */
 module.exports.screen_change_width_handler = (_event) => {
-	let main_content_div = document.getElementById("main-content-div");
-
-	if (!_event.visible) {
-		main_content_div.setAttribute("widthRatio", 1);
-	} else {
-		main_content_div.setAttribute("widthRatio", 0.8);
-	}
+	current_screen.expand(!_event.visible);
 
 	console.log("screen event received", _event);
 };
