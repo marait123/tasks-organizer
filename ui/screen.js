@@ -1,5 +1,5 @@
 const { extend } = require("jquery");
-// fs = require("fs");
+// const fs = require("fs");
 // TODO: move screens to another file
 class Screen {
 	constructor() {}

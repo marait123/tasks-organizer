@@ -19,6 +19,7 @@ const {
 	render_sidebar,
 } = require("./ui/sidebar");
 const { load_object_from_json, store_object_as_json } = require("./utilities");
+const { constants } = require("buffer");
 const app_state = {
 	// currentList: 0,
 	// last_id: 1,
@@ -105,6 +106,7 @@ list_state = {
 		this.setModified(true);
 
 		// this.subTodos[id].completed = checked;
+		// TODO: recursive implementation
 		for (let index = 0; index < this.subTodos.length; index++) {
 			const element = this.subTodos[index];
 			if (element.id == id) {
@@ -144,17 +146,58 @@ list_state = {
 		};
 		todoMain.subTodos.push(todo);
 	},
+	insertTodoInSubTodos(todo, path, note = "", completed = false) {
+		this.setModified(true);
+		todo = {
+			id: this.get_new_id(),
+			name: path,
+			path: path,
+			note: note,
+			completed: completed,
+			subTodos: [],
+		};
+		todo.subTodos.push(todo);
+		return todo.subTodos[todo.subTodos.length - 1];
+	},
 	load(file_path) {
 		load_object_from_json(this, file_path);
 		render_screen(new TodoScreen(this));
 	},
+	insert_files_recursive(todo, files, path) {
+		for (let index = 0; index < files.length; index++) {
+			const value = files[index];
+			full_path = path + "\\" + value;
+			let new_todo = this.insertTodoInSubTodos(todo, full_path);
+			let is_dir = fs.lstatSync(full_path).isDirectory();
+			console.log("full path is ", full_path);
+			console.log("is directory is ", is_dir);
+			if (is_dir) {
+				console.log("enetered nevertheless");
+				let new_files = fs.readdirSync(full_path);
+				console.log("new files are ", new_files);
+				new_files.forEach((value, index, arr) => {
+					this.insert_files_recursive(new_todo, new_files, full_path);
+				});
+			}
+			console.log(full_path);
+			// new_value;
+			// list_state.insertTodo(list_state, path);
+		}
+	},
+	// note folder path must be set before call
 	insertFiles(files) {
+		// console.log(this.folderPath);
+		// this.insert_files_recursive(this, files, this.folderPath);
+		// render_screen(new TodoScreen(list_state));
+		// return;
+		console.log("the files are ", files);
 		files.forEach((value, index, arr) => {
 			list_state.insertTodo(list_state, value);
 		});
 		render_screen(new TodoScreen(list_state));
 	},
 	getTodo(id) {
+		//TODO: change to  recursive implementation
 		for (let index = 0; index < this.subTodos.length; index++) {
 			const element = this.subTodos[index];
 			if (element.id == id) {
