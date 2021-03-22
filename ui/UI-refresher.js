@@ -1,10 +1,31 @@
-let side_appear = true;
+ui_refresher = {
+	side_appear: true,
+	handlers: {
+		toggle_sidebar: [],
+	},
+	fire(event_type, event) {
+		for (let index = 0; index < this.handlers[event_type].length; index++) {
+			const fn = this.handlers[event_type][index];
+			fn(event);
+		}
+	},
+
+	subscribe(event_type, fn) {
+		this.handlers[event_type].push(fn);
+	},
+	unsubscribe(event_type, fn) {
+		this.handlers[event_type] = this.handlers[event_type].filter(
+			(fun) => fun != fn
+		);
+	},
+};
+
 function toggle_todo_list() {
 	// alert("toggle todo list");
 	let side_div = document.getElementById("side-div");
 	let main_content_div = document.getElementById("main-content-div");
 
-	if (side_appear) {
+	if (ui_refresher.side_appear) {
 		side_div.style.display = "none";
 		side_div.setAttribute("widthRatio", 0);
 		main_content_div.setAttribute("widthRatio", 1);
@@ -14,7 +35,8 @@ function toggle_todo_list() {
 		side_div.setAttribute("widthRatio", 0.2);
 		main_content_div.setAttribute("widthRatio", 0.8);
 	}
-	side_appear = !side_appear;
+	ui_refresher.side_appear = !ui_refresher.side_appear;
+	ui_refresher.fire("toggle_sidebar", { appear: ui_refresher.side_appear });
 	resize_window();
 }
 function resize_window() {
