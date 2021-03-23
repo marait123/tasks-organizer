@@ -5,6 +5,7 @@ input {
 	outline: 0;
 }
 body {
+	user-select: none;
 	margin: 0;
 	background: rgb(131, 58, 180);
 	background: linear-gradient(
